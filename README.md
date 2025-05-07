@@ -1,6 +1,6 @@
 
 # StudyNotion - EdTech Platform
-:rocket: [Link to website][https://studynotion-frontend.vercel.app/]
+
 
 
 ![Main Page](images/mainpage.png)
@@ -10,10 +10,10 @@ StudyNotion is a fully functional EdTech platform that enables users to create, 
 
 - [Introduction](#introduction)
 - [System Architecture](#system-architecture)
-  - [Front-end](#front-end)
-  - [Back-end](#back-end)
-  - [Database](#database)
-  - [Architecture Diagram](#architecture-diagram)
+- [Front-end](#front-end)
+- [Back-end](#back-end)
+- [Database](#database)
+- [Architecture Diagram](#architecture-diagram)
 - [API Design](#api-design)
 - [Installation](#installation)
 - [Configuration](#configuration)
