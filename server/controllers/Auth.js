@@ -12,6 +12,7 @@ require("dotenv").config()
 
 exports.signup = async (req, res) => {
   try {
+    console.log("Request Body:", req.body);
     // Destructure fields from the request body
     const {
       firstName,
@@ -76,16 +77,32 @@ exports.signup = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10)
 
     // Create the user
-    let approved = ""
-    approved === "Instructor" ? (approved = false) : (approved = true)
+    const approved = accountType === "Instructor" ? false : true;
 
     // Create the Additional Profile For User
+    console.log("Profile details before creation:", {
+      gender: null,
+      dateOfBirth: null,
+      about: null,
+      contactNumber: contactNumber,
+    });
     const profileDetails = await Profile.create({
       gender: null,
       dateOfBirth: null,
       about: null,
-      contactNumber: null,
+      contactNumber: contactNumber,
     })
+    console.log("User details before creation:", {
+      firstName,
+      lastName,
+      email,
+      contactNumber,
+      password: hashedPassword,
+      accountType: accountType,
+      approved: approved,
+      additionalDetails: profileDetails._id,
+      image: `https://api.dicebear.com/5.x/initials/svg?seed=${firstName} ${lastName}`,
+    });
     const user = await User.create({
       firstName,
       lastName,
@@ -95,7 +112,7 @@ exports.signup = async (req, res) => {
       accountType: accountType,
       approved: approved,
       additionalDetails: profileDetails._id,
-      image: "",
+      image: `https://api.dicebear.com/5.x/initials/svg?seed=${firstName} ${lastName}`,
     })
 
     return res.status(200).json({
@@ -178,6 +195,8 @@ exports.login = async (req, res) => {
     })
   }
 }
+const otpTemplate = require("../mail/templates/emailVerificationTemplate");
+
 // Send OTP For Email Verification
 exports.sendotp = async (req, res) => {
   try {
@@ -202,26 +221,38 @@ exports.sendotp = async (req, res) => {
       lowerCaseAlphabets: false,
       specialChars: false,
     })
-    const result = await OTP.findOne({ otp: otp })
-    console.log("Result is Generate OTP Func")
-    console.log("OTP", otp)
-    console.log("Result", result)
+    let result = await OTP.findOne({ otp: otp })
     while (result) {
       otp = otpGenerator.generate(6, {
         upperCaseAlphabets: false,
       })
+      result = await OTP.findOne({ otp: otp })
     }
     const otpPayload = { email, otp }
+    // Await the creation and sending of the OTP
     const otpBody = await OTP.create(otpPayload)
+    
     console.log("OTP Body", otpBody)
+
+    // Send the OTP email
+    await mailSender(
+      email,
+      "Verification Email from StudyNotion",
+      otpTemplate(otp)
+    );
+
     res.status(200).json({
       success: true,
       message: `OTP Sent Successfully`,
       otp,
     })
   } catch (error) {
-    console.log(error.message)
-    return res.status(500).json({ success: false, error: error.message })
+    console.log("Error while sending OTP:", error.message)
+    return res.status(500).json({ 
+        success: false, 
+        message: "Could not send OTP", // More specific error message
+        error: error.message 
+    })
   }
 }
 

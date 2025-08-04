@@ -6,6 +6,7 @@ const profileRoutes = require("./routes/Profile");
 const paymentRoutes = require("./routes/Payments");
 const courseRoutes = require("./routes/Course");
 const contactUsRoute = require("./routes/Contact");
+const adminRoutes = require("./routes/Admin");
 const database = require("./config/database");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
@@ -14,7 +15,7 @@ const fileUpload = require("express-fileupload");
 //const dotenv = require("dotenv");
 
 require("dotenv").config();
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 3002 ; //
 
 //database connect
 database.connect();
@@ -23,10 +24,10 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
 	cors({
-		origin:"http://localhost:4000",
+		origin: process.env.CORS_ORIGIN || "http://localhost:3000",
 		credentials:true,
 	})
-)
+);
 
 app.use(
 	fileUpload({
@@ -35,7 +36,7 @@ app.use(
 	})
 )
 //cloudinary connection
-cloudinaryConnect();
+cloudinaryConnect(); 
 
 //routes
 app.use("/api/v1/auth", userRoutes);
@@ -43,6 +44,12 @@ app.use("/api/v1/profile", profileRoutes);
 app.use("/api/v1/course", courseRoutes);
 app.use("/api/v1/payment", paymentRoutes);
 app.use("/api/v1/reach", contactUsRoute);
+const errorHandler = require("./middlewares/errorHandler");
+
+app.use("/api/v1/admin", adminRoutes);
+
+// Error handling middleware
+app.use(errorHandler);
 
 //def route
 
@@ -54,6 +61,6 @@ app.get("/", (req, res) => {
 });
 
 app.listen(PORT, () => {
-	console.log(`App is running at ${PORT}`)
+	console.log(`App is running at ${PORT}, http://localhost:${PORT}, server is up and running...`);
 })
 

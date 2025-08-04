@@ -28,6 +28,11 @@ const userSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
+		contactNumber: {
+			type: Number,
+			required: true,
+			trim: true,
+		},
 		// Define the role field with type String and enum values of "Admin", "Student", or "Visitor"
 		accountType: {
 			type: String,

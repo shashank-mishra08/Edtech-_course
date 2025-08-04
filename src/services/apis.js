@@ -1,4 +1,4 @@
-const BASE_URL ="http://localhost:3000/api/v1"
+const BASE_URL ="http://localhost:4000/api/v1"
 
 // AUTH ENDPOINTS
 export const endpoints = {
@@ -7,6 +7,8 @@ export const endpoints = {
   LOGIN_API: BASE_URL + "/auth/login",
   RESETPASSTOKEN_API: BASE_URL + "/auth/reset-password-token",
   RESETPASSWORD_API: BASE_URL + "/auth/reset-password",
+  ADMIN_DASHBOARD_API: BASE_URL + "/admin/dashboard",
+  GET_ALL_USERS_API: BASE_URL + "/admin/users",
 }
 
 // PROFILE ENDPOINTS

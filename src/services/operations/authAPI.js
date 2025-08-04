@@ -35,7 +35,11 @@ export function sendOtp(email, navigate) {
       navigate("/verify-email")
     } catch (error) {
       console.log("SENDOTP API ERROR............", error)
-      toast.error("Could Not Send OTP")
+      if (error.response && error.response.status === 401) {
+        toast.error("User is Already Registered");
+      } else {
+        toast.error("Could Not Send OTP");
+      }
     }
     dispatch(setLoading(false))
     toast.dismiss(toastId)
@@ -50,7 +54,8 @@ export function signUp(
   password,
   confirmPassword,
   otp,
-  navigate
+  navigate,
+  contactNumber
 ) {
   return async (dispatch) => {
     const toastId = toast.loading("Loading...")
@@ -64,6 +69,7 @@ export function signUp(
         password,
         confirmPassword,
         otp,
+        contactNumber,
       })
 
       console.log("SIGNUP API RESPONSE............", response)

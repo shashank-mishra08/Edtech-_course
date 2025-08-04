@@ -20,6 +20,7 @@ function SignupForm() {
     firstName: "",
     lastName: "",
     email: "",
+    contactNumber: "",
     password: "",
     confirmPassword: "",
   })
@@ -27,7 +28,7 @@ function SignupForm() {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
-  const { firstName, lastName, email, password, confirmPassword } = formData
+  const { firstName, lastName, email, password, confirmPassword, contactNumber } = formData
 
   // Handle input fields, when some value changes
   const handleOnChange = (e) => {
@@ -134,6 +135,24 @@ function SignupForm() {
             value={email}
             onChange={handleOnChange}
             placeholder="Enter email address"
+            style={{
+              boxShadow: "inset 0px -1px 0px rgba(255, 255, 255, 0.18)",
+            }}
+            className="w-full rounded-[0.5rem] bg-richblack-800 p-[12px] text-richblack-5"
+          />
+        </label>
+        {/* Add Contact Number field here */}
+        <label className="w-full">
+          <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
+            Contact Number <sup className="text-pink-200">*</sup>
+          </p>
+          <input
+            required
+            type="tel" // Use type="tel" for phone numbers
+            name="contactNumber"
+            value={formData.contactNumber} // Access from formData
+            onChange={handleOnChange}
+            placeholder="Enter contact number"
             style={{
               boxShadow: "inset 0px -1px 0px rgba(255, 255, 255, 0.18)",
             }}
