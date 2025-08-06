@@ -1,9 +1,10 @@
 import axios from "axios";
 
+console.log("Axios Base URL:", process.env.REACT_APP_BASE_URL);
+
 // Create axios instance with default settings
 export const axiosInstance = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
-  console.log("Axios Base URL:", process.env.REACT_APP_BASE_URL),
   withCredentials: true, // 👈 Important for cookies, JWT, etc.
 });
 
